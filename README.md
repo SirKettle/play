@@ -1,4 +1,4 @@
-# ShowCase
+# Play
 
 A showcase if what can be done with React, redux, canvas and an imagination
 
