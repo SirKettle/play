@@ -1,0 +1,110 @@
+
+/* holo-holo colors */
+/*
+#38bada; /* blue */
+/*
+#ffec14; /* yellow */
+/*
+#d93d9d; /* pink */
+/*
+#e52f2f; /* red */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  flex: 0 0 auto;
+}
+
+.header {
+  flex: 0 0 auto;
+  background: white;
+  padding: 1rem 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (min-width: 600px) {
+    padding: 2rem 3rem;
+  }
+}
+
+.logoTextFlex {
+  flex: 0 0 60%;
+  @media (min-width: 600px) {
+    flex: 0 0 55%;
+  }
+}
+
+.logoText {
+  width: 100%;
+  height: 100%;
+}
+
+.logoAnimalsFlex {
+  flex: 0 0 30%;
+}
+
+.logoAnimals {
+  width: 100%;
+  height: 100%;
+}
+
+.heroWrapper {
+  flex: 0 0 auto;
+  width: 100%;
+  position: relative;
+  background: white;
+}
+
+.hero {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.heroCopy {
+  padding: 1rem 1rem 0;
+
+  @media (min-width: 600px) {
+    padding: 2rem 3rem 0;
+  }
+}
+
+.content {
+  background: #f7f3eb;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  padding: 1rem 1rem 2rem;
+  
+  @media (min-width: 600px) {
+    padding: 2rem 3rem 4rem;
+  }
+}
+
+.content a {
+  color: #38bada; /* blue */
+  text-decoration: none;
+}
+
+.content a:hover {
+  color: #38bada; /* blue */
+  text-decoration: underline;
+}
+
+.border {
+  flex: 0 0 1px;
+  background: rgba(0,0,0,0.1);
+}
+
+.footer {
+  flex: 0 0 auto;
+}

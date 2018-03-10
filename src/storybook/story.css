@@ -1,0 +1,67 @@
+
+:global(html) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+:global(html), body {
+  box-sizing: border-box;
+  
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 1.5;
+  color: #333;
+}
+
+:global(#root) {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+hr {
+  background: rgba(255,255,255,0.2);
+  height: 1px;
+  margin: 2rem 0;
+  border: none;
+}
+
+
+.story {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  background: white;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  background: #fafafa; /* mustard */
+  color: #333;
+}
+
+.padded {
+  padding: 2rem;
+}
