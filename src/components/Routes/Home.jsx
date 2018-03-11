@@ -17,8 +17,8 @@ function Home() {
   return (
     <Layout>
       <Columns>
+        <Content markdown={columnsCopy[0]} justifyText="justify" />
         <Content markdown={columnsCopy[1]} justifyText="justify" />
-        <Content markdown={columnsCopy[2]} justifyText="justify" />
       </Columns>
     </Layout>
   );

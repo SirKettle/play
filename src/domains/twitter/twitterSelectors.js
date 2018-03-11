@@ -2,7 +2,7 @@ import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 import * as site from '../../constants/site';
 
-const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const modelSelector = state => state.twitter;
 
@@ -12,8 +12,8 @@ const padNum = (num) => {
 
 const composeTweet = (datum) => {
   const date = new Date(datum.get('created_at') * 1000);
-  const year = date.getUTCFullYear().toString().slice(2);
   const month = monthLabels[date.getUTCMonth()];
+  const year = date.getUTCFullYear().toString().slice(2);
   const dateString = `${padNum(date.getUTCDate())} ${month} ${year}`;
   const textParts = datum.get('text').split(' ');
   const url = textParts.pop();
@@ -51,7 +51,10 @@ export const tweetsSelector = createSelector(
     if (!model || !model.get('data')) {
       return null;
     }
-    const tweets = model.get('data').map(composeTweet);
+    const tweets = model.get('data')
+      .filter(datum => datum.get('retweeted') === false)
+      .filter(datum => datum.get('in_reply_to_screen_name') === null)
+      .map(composeTweet);
     return tweets;
   }
 );
