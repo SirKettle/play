@@ -187,16 +187,22 @@ class RainDrops extends Component {
   render() {
     const { isActive, togglePause, drops } = this.props;
 
+    const infoMarkdown = `
+${isActive ? `**RDS Rate**: ${this.state.rate} (Rain drops / sec)` : 'Paused'}
+
+**Current no**: ${drops.length}
+
+**Keys pressed**: ${this.props.keysDown.join(', ')}
+    `;
+
     return (
       <div className={styles.stage}>
-        <p>Keys pressed: {this.props.keysDown.join(', ')}</p>
         <p>
           <button onClick={togglePause}>{ isActive ? 'Pause' : 'Start' }</button>
           <button onClick={this.resetGame}>{ 'Reset' }</button>
           <input defaultValue={this.state.rate} type="range" min={0} max={250} onChange={this.onRateChange} />
         </p>
-        <p>{ isActive ? `RDS Rate: ${this.state.rate} (Rain drops / sec)` : 'Paused' }</p>
-        <p>Current no: {drops.length}</p>
+        <Content markdown={infoMarkdown} />
         { this.renderGuage(300, drops.length) }
         <FixedRatioContainer width={8} height={5}>
           <canvas
