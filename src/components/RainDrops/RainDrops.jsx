@@ -220,7 +220,7 @@ RainDrops.propTypes = {
   togglePause: PropTypes.func.isRequired,
   onKeyUp: PropTypes.func.isRequired,
   onKeyDown: PropTypes.func.isRequired,
-  onBlur: PropTypes.func.isRequired,
+  // onBlur: PropTypes.func.isRequired,
   isActive: PropTypes.bool.isRequired,
   frameIndex: PropTypes.number.isRequired,
   /* eslint react/forbid-prop-types: 0 */
