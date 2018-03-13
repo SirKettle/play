@@ -28,7 +28,7 @@ const mapDispatchToProps = dispatch => ({
   updateGameClock: (delta) => { dispatch(gameActions.updateGameClock(delta)); },
   togglePause: () => { dispatch(gameActions.togglePause()); },
   resetDrops: () => { dispatch(dropsActions.resetDrops()); },
-  addDrop: () => { dispatch(dropsActions.addDrop()); },
+  addDrop: (args) => { dispatch(dropsActions.addDrop(args)); },
   onKeyUp: (event) => { dispatch(inputActions.onKeyUp(event)); },
   onKeyDown: (event) => { dispatch(inputActions.onKeyDown(event)); },
   onBlur: (event) => { dispatch(inputActions.onBlur(event)); }
@@ -37,7 +37,9 @@ const mapDispatchToProps = dispatch => ({
 class RainDrops extends Component {
   
   state = {
-    rate: 20
+    rate: 20,
+    width: 800,
+    height: 500
   }
 
   componentWillMount() {
@@ -74,6 +76,18 @@ class RainDrops extends Component {
   //  UTILS
 
   onRateChange = (event) => { this.setRate(event.target.value); }
+
+  onCanvasClick = (event) => {
+    const canvasRect = this.canvas.getBoundingClientRect();
+    const xPx = event.clientX - canvasRect.x;
+    const yPx = event.clientY - canvasRect.y;
+    const canvasCoords = {
+      x: xPx / canvasRect.width,
+      y: yPx / canvasRect.height,
+      lifeForce: 1500
+    };
+    this.props.addDrop(canvasCoords);
+  }
 
   setRate = (rate) => {
     this.setState({ rate: clamp(0, 1000)(rate) });
@@ -117,7 +131,9 @@ class RainDrops extends Component {
     const { delta } = clock;
     // update state of game
     times(() => {
-      probDoMs(addDrop, delta, 1000);
+      probDoMs(() => {
+        addDrop({});
+      }, delta, 1000);
     }, this.state.rate);
     // draw the game on canvas
     this.updateCanvas();
@@ -194,7 +210,7 @@ ${isActive ? `**RDS Rate**: ${this.state.rate} (Rain drops / sec)` : 'Paused'}
 
 **Keys pressed**: ${this.props.keysDown.join(', ')}
     `;
-
+    /* eslint jsx-a11y/no-static-element-interactions: 0 */
     return (
       <div className={styles.stage}>
         <p>
@@ -207,9 +223,10 @@ ${isActive ? `**RDS Rate**: ${this.state.rate} (Rain drops / sec)` : 'Paused'}
         <FixedRatioContainer width={8} height={5}>
           <canvas
             ref={(el) => { this.canvas = el; }}
-            width={800}
-            height={500}
+            width={this.state.width}
+            height={this.state.height}
             className={styles.canvas}
+            onClick={this.onCanvasClick}
           />
         </FixedRatioContainer>
       </div>

@@ -10,8 +10,9 @@ export const resetDrops = () => (dispatch) => {
   });
 };
 
-export const addDrop = () => (dispatch) => {
+export const addDrop = payload => (dispatch) => {
   dispatch({
-    type: actionTypes.REQUEST_DROPS_ADD
+    type: actionTypes.REQUEST_DROPS_ADD,
+    payload
   });
 };
