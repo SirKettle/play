@@ -1,3 +1,4 @@
+import * as gameSelectors from '../game/gameSelectors';
 
 export const actionTypes = {
   REQUEST_GAME_RESET: 'REQUEST_GAME_RESET',
@@ -5,20 +6,25 @@ export const actionTypes = {
   REQUEST_GAME_UDATE: 'REQUEST_GAME_UDATE'
 };
 
-export function resetGameClock(dispatch) {
-  dispatch({
-    type: actionTypes.REQUEST_GAME_RESET
-  });
-}
-
-export function togglePause(dispatch) {
+export const togglePause = () => (dispatch) => {
   dispatch({
     type: actionTypes.REQUEST_GAME_TOGGLE_PAUSE
   });
-}
+};
 
-export function updateGameClock(dispatch) {
+export const resetGameClock = () => (dispatch) => {
   dispatch({
-    type: actionTypes.REQUEST_GAME_UDATE
+    type: actionTypes.REQUEST_GAME_RESET
   });
-}
+};
+
+export const updateGameClock = delta => (dispatch, getState) => {
+  // console.log(typeof getState);
+  dispatch({
+    type: actionTypes.REQUEST_GAME_UDATE,
+    payload: {
+      delta,
+      isActive: gameSelectors.isActiveSelector(getState())
+    }
+  });
+};

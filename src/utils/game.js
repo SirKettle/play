@@ -12,3 +12,7 @@ export const probDoMs = (func, delta, ms = 1000) => {
 };
 
 export const getPixel = (percentage, total) => Math.round(percentage * total);
+
+export const toFixedDecimalPlaces = (num, n = 3) => {
+  return parseFloat(Math.round(num * (10 ** n)) / (10 ** n)).toFixed(n);
+};

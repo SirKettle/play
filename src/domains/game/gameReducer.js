@@ -4,7 +4,7 @@ import { actionTypes } from './gameActions';
 const reducers = {
   [actionTypes.REQUEST_GAME_RESET]: (state) => {
     const timeNow = Date.now();
-    return state.set('active', true)
+    return state.set('active', false)
       .set('clock', {
         initialTimestamp: timeNow,
         timestamp: timeNow,
@@ -17,11 +17,11 @@ const reducers = {
   [actionTypes.REQUEST_GAME_TOGGLE_PAUSE]: (state) => {
     return state.update('active', isActive => !isActive);
   },
-  [actionTypes.REQUEST_GAME_UDATE]: (state) => {
+  [actionTypes.REQUEST_GAME_UDATE]: (state, action) => {
     const timeNow = Date.now();
     const isActive = state.get('active');
+    const delta = action.payload.delta;
     return state.update('clock', (clock) => {
-      const delta = timeNow - clock.timestamp;
       const updatedClock = {
         ...clock,
         timestamp: timeNow,

@@ -3,13 +3,18 @@ import { actionTypes } from './dropsActions';
 import { actionTypes as gameActionTypes } from '../game/gameActions';
 // import { probDo } from '../../utils/game';
 
-const composeRainDrop = () => ({
-  x: Math.random(),
-  y: Math.random(),
-  size: Math.floor((Math.random() * 20) + 5),
-  lifeTime: (Math.random() * 6000) + 2000,
-  bornTimestamp: Date.now()
-});
+const composeRainDrop = () => {
+  const lifeSpan = (Math.random() * 1000) + 100;
+  // const lifeSpan = 2000;
+  return {
+    x: Math.random(),
+    y: Math.random(),
+    size: 0, // Math.floor((Math.random() * 20) + 5),
+    // lifeSpan: (Math.random() * 6000) + 2000,
+    lifeSpan,
+    lifeLeft: lifeSpan
+  };
+};
 
 const reducers = {
   [actionTypes.REQUEST_DROPS_RESET]: (state) => {
@@ -21,15 +26,22 @@ const reducers = {
       return drops;
     });
   },
-  [gameActionTypes.REQUEST_GAME_UDATE]: (state) => {
-    const timeNow = Date.now();
+  [gameActionTypes.REQUEST_GAME_UDATE]: (state, action) => {
+    const { delta, isActive } = action.payload;
+    if (!isActive) {
+      return state;
+    }
     return state.update('drops', (drops) => {
       return drops.map(drop => ({
         ...drop,
-        lifeTime: drop.lifeTime - (timeNow - drop.bornTimestamp),
-        size: drop.size - 0.1
-      })).filter((drop) => {
-        return drop.size > 1 && drop.lifeTime > 0;
+        // x: drop.x + 0.0003,
+        // y: drop.y + 0.0005,
+        lifeLeft: Math.max(0, drop.lifeLeft - delta),
+        size: drop.size + 3
+      }))
+      .filter((drop) => {
+        return drop.lifeLeft > 0;
+        // return !!drop;
       });
     });
   }
