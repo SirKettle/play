@@ -11,7 +11,7 @@ import * as dropsSelectors from '../../domains/drops/dropsSelectors';
 import FixedRatioContainer from '../FixedRatioContainer/FixedRatioContainer';
 import Content from '../Content/Content';
 import styles from './RainDrops.css';
-import { probDoMs, getPixel/* , toFixedDecimalPlaces */ } from '../../utils/game';
+import { probDoMs, getPixel } from '../../utils/game';
 
 const mapStateToProps = (state) => {
   return {
@@ -83,8 +83,7 @@ class RainDrops extends Component {
     const yPx = event.clientY - canvasRect.y;
     const canvasCoords = {
       x: xPx / canvasRect.width,
-      y: yPx / canvasRect.height,
-      lifeForce: 1500
+      y: yPx / canvasRect.height
     };
     this.props.addDrop(canvasCoords);
   }
@@ -207,8 +206,6 @@ class RainDrops extends Component {
 ${isActive ? `**RDS Rate**: ${this.state.rate} (Rain drops / sec)` : 'Paused'}
 
 **Current no**: ${drops.length}
-
-**Keys pressed**: ${this.props.keysDown.join(', ')}
     `;
     /* eslint jsx-a11y/no-static-element-interactions: 0 */
     return (

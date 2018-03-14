@@ -17,7 +17,7 @@ const renderers = {
 };
 
 const markdown = `
-### &copy; ${site.name} ${new Date().getUTCFullYear()}
+### &copy; ${site.author} ${new Date().getUTCFullYear()}
 `;
 
 const Footer = ({

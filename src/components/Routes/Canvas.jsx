@@ -4,12 +4,20 @@ import { routeNodeSelector } from 'redux-router5';
 import Layout from '../Layout/Layout';
 // import Game from '../Game/Game';
 import RainDrops from '../RainDrops/RainDrops';
+import Content from '../Content/Content';
+
+const rainDropsIntro = `
+### Rain drops!?
+
+Why? Well, I was simply looking for an excuse to mess around with making a basic game loop using redux, and paiting on a \`<canvas>\` inside a react app.
+
+---
+`;
 
 function Canvas() {
   return (
     <Layout>
-      { 'Some amazing canvas component here' }
-      <hr />
+      <Content markdown={rainDropsIntro} />
       <RainDrops />
     </Layout>
   );
