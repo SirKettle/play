@@ -1,10 +1,17 @@
 # Play
 
-A showcase if what can be done with React, redux, canvas and an imagination
+http://play.willthirkettle.co.uk
+
+### Games, experiments, fun side projects - well that’s the plan...
+
+I like to work on the occasional side project. This helps me to fine tune my skills and learn new tech. The goal is to use this site, as a central place, to host and showcase them.
+
+
+---
 
 ## Tech
 
-Using React, Redux, Router5 and bootstrapped with Webpack2.
+Website (and most components) using React, Redux, Router5 and bootstrapped with Webpack2.
 
 Based on this simple [Webpack2 React seed project](https://github.com/tpina/react-webpack2-seed) and then swapping out the react-router for [Router5](https://github.com/router5/redux-router5) using this [redux-router5 example](https://github.com/router5/examples/tree/master/apps/react-redux)
 
