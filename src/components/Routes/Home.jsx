@@ -14,6 +14,11 @@ ${site.description}
 
 ---
 
+### Sky fighters
+_Shoot'em up - a space game using Phaser JS_
+`, `
+---
+
 ### Make Mars great again
 _A modified version of the classic breakout game using Phaser_
 `];
@@ -27,8 +32,15 @@ function Home() {
         preContent={'### This is what I’ve been up to'}
       /> */}
       <GameFrame
-        width={680}
-        height={420}
+        width={800}
+        height={500}
+        src="http://skyfighter.willthirkettle.co.uk/"
+        name="Sky fighter!"
+      />
+      <Content markdown={columnsCopy[1]} />
+      <GameFrame
+        width={640}
+        height={380}
         src="http://breakout.willthirkettle.co.uk/"
         name="Make Mars great again!"
       />
