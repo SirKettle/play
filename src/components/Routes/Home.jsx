@@ -7,6 +7,7 @@ import Layout from '../Layout/Layout';
 import Content from '../Content/Content';
 import * as site from '../../constants/site';
 import GameFrame from '../GameFrame/GameFrame';
+import IFrame from '../IFrame/IFrame';
 
 const columnsCopy = [`
 ## ${site.strap}
@@ -16,6 +17,13 @@ ${site.description}
 
 ### Sky fighters
 _Shoot'em up - a space game using Phaser JS_
+`, `
+---
+
+### Choosy Movie
+_A cheesy title for a handy movie/actor search tool_
+
+[choosymovie.tv](http://choosymovie.tv/)
 `, `
 ---
 
@@ -38,6 +46,14 @@ function Home() {
         name="Sky fighter!"
       />
       <Content markdown={columnsCopy[1]} />
+      <IFrame
+        width={375}
+        height={610}
+        src="http://choosymovie.tv/"
+        name="Search for movies based on your mood..."
+        scrollable
+      />
+      <Content markdown={columnsCopy[2]} />
       <GameFrame
         width={640}
         height={380}

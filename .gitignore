@@ -32,3 +32,5 @@ dist
 bower_components/
 
 .firebaserc
+
+.idea

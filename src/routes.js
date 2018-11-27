@@ -3,10 +3,12 @@ import { reduce, pick } from 'ramda';
 
 import Home from './components/Routes/Home';
 import Canvas from './components/Routes/Canvas';
+import Fantasy from './components/Routes/FPL';
 
 export const ROUTES = {
   ROOT: { name: '__root__', path: '/', component: Home, label: 'Home', inNav: true },
-  CANVAS: { name: 'canvas', path: '/canvas', component: Canvas, label: 'Canvas', inNav: true }
+  CANVAS: { name: 'canvas', path: '/canvas', component: Canvas, label: 'Canvas', inNav: true },
+  FPL: { name: 'fpl', path: '/fpl', component: Fantasy, label: 'FPL', inNav: true }
 };
 
 const composeLink = route => pick(['name', 'label'], route);

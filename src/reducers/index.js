@@ -4,6 +4,7 @@ import twitter from '../domains/twitter/twitterReducer';
 import game from '../domains/game/gameReducer';
 import input from '../domains/input/inputReducer';
 import drops from '../domains/drops/dropsReducer';
+import fpl from '../domains/fpl/reducer';
 import config from '../domains/config/configReducer';
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   game,
   input,
   drops,
+  fpl,
   config
 });
 

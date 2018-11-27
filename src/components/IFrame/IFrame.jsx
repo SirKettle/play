@@ -5,7 +5,8 @@ const IFrame = ({
   src,
   name,
   width,
-  height
+  height,
+  scrollable
 }) => (
   <iframe
     className={className}
@@ -14,7 +15,7 @@ const IFrame = ({
     width={width}
     height={height}
     frameBorder="0"
-    scrolling="no"
+    scrolling={scrollable ? 'yes' : 'no'}
   >
     <p>Your browser does not support iframes.</p>
   </iframe>
@@ -25,13 +26,15 @@ IFrame.propTypes = {
   src: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   width: PropTypes.number,
-  height: PropTypes.number
+  height: PropTypes.number,
+  scrollable: PropTypes.bool
 };
 
 IFrame.defaultProps = {
   className: null,
   width: undefined,
-  height: undefined
+  height: undefined,
+  scrollable: false
 };
 
 export default IFrame;

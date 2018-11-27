@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { routeNodeSelector } from 'redux-router5';
 import Layout from '../Layout/Layout';
-// import Game from '../Game/Game';
 import RainDrops from '../RainDrops/RainDrops';
 import Content from '../Content/Content';
 
