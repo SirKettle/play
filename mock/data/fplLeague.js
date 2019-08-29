@@ -4703,7 +4703,7 @@ export const getMockData = leagueId => {
 
   const during = true;
 
-  return during? duringGameWeek : midWeek;
+  return during ? duringGameWeek : midWeek;
 };
 
 export const OUR_LEAGUE_ID = 34610;

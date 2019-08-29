@@ -9,9 +9,12 @@ import typography from '../../css/typography.css';
 import loadingStates from '../../constants/loadingStates';
 import styles from './index.css';
 
+const getKey = (a, b) => `key${a}${b}`;
+
 const mapStateToProps = (state) => {
   return {
     results: fplSelectors.resultsSelector(state),
+    league: fplSelectors.leagueSelector(state),
     standings: fplSelectors.decoratedStandingsSelector(state),
     loadingState: fplSelectors.detailsLoadingSelector(state),
     fixtures: fplSelectors.fixturesSelector(state)
@@ -19,7 +22,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  loadFplDetails: () => { loadDetails(dispatch); }
+  loadFplDetails: (leagueId) => { loadDetails(dispatch, leagueId); }
 });
 
 const renderLuck = (luckScore) => {
@@ -47,12 +50,12 @@ const renderLuckEmoji = (isUnlucky, isLucky) => {
 };
 
 const renderResultPlayer = (player, playerIndex, key, luckScores) => {
-  const { luckScore } = player.extras;
-  const isUnlucky = luckScore === luckScores[0];
-  const isLucky = luckScore === last(luckScores);
+  const { altLuckScore } = player.extras;
+  const isUnlucky = altLuckScore === luckScores[0];
+  const isLucky = altLuckScore === last(luckScores);
   return (
     <div key={`${key}-player-${playerIndex}`} className={styles.resultPlayer}>
-      {renderLuck(luckScore, isUnlucky, isLucky)}
+      {renderLuck(altLuckScore, isUnlucky, isLucky)}
       <div className={styles.resultPlayerName}>
         {renderLuckEmoji(isUnlucky, isLucky)}
         <span> {player.teamName} </span>
@@ -77,7 +80,7 @@ const renderWeekResults = (weekResults, weekIndex) => {
   const key = `week-${weekIndex}`;
   const name = `Week ${weekResults[0].week}`;
   const luckScores = flatten(weekResults.map(result =>
-    result.players.map(player => player.extras.luckScore)))
+    result.players.map(player => player.extras.altLuckScore)))
     .sort((a, b) => {
       return a > b ? 1 : -1;
     });
@@ -94,19 +97,22 @@ const renderWeekResults = (weekResults, weekIndex) => {
 class FplContainer extends Component {
 
   static defaultProps = {
-    results: null,
-    standings: null,
-    fixtures: null,
+    league: {},
+    results: [],
+    standings: [],
+    fixtures: [],
     loadingContent: null,
     preContent: null
   }
 
   componentWillMount() {
+    // this.props.loadFplDetails(34695);
     this.props.loadFplDetails();
   }
 
   render() {
-    const { results, fixtures, standings, loadingState, loadingContent, preContent } = this.props;
+    const { results, fixtures, standings, loadingState,
+      league, loadingContent, preContent } = this.props;
 
     if (loadingState !== loadingStates.COMPLETE) {
       if (loadingContent) {
@@ -115,29 +121,16 @@ class FplContainer extends Component {
       return (<div>Loading data from FPL...</div>);
     }
 
-    console.log(standings);
-    console.log(results);
-    console.log(fixtures);
-        //
-        // rank: 4
-        // last_rank: 2
-        // extras.name: "Steve Lifgren"
-        // extras.teamName: "Schmeichel Jackson"
-        // matches_played: 38
-        // matches_won: 6
-        // matches_lost: 6
-        // matches_drawn: 0
-        // points_for: 555
-        // points_against: 561
-        // total: 18
-        // extras.totalLuckScore: 20
-        // extras.totalProbPoints: 30
-    /*
-     */
     return (
       <div>
         { preContent ? (<Content markdown={preContent} />) : null }
-        <h2 className={classnames(typography.ben, styles.withMargins)}>Standings</h2>
+        <h2 className={classnames(typography.ben, styles.withMargins)}>
+          {league.name}
+        </h2>
+        <hr />
+        <h2 className={classnames(typography.ben, styles.withMargins)}>
+          Standings
+        </h2>
         <hr />
         <h3 className={classnames(typography.beau, styles.withMargins)}>The Official table</h3>
         <p>ahem, Fake news!</p>
@@ -157,7 +150,7 @@ class FplContainer extends Component {
           </thead>
           <tbody>
             {
-              standings.map((p, i) => (<tr>
+              standings.map((p, i) => (<tr key={getKey('official', i)}>
                 <td>{i + 1}</td>
                 <td>{p.extras.teamName}</td>
                 <td>{p.matches_played}</td>
@@ -197,7 +190,7 @@ class FplContainer extends Component {
                 .sort((a, b) => {
                   return a.extras.totalProbPoints < b.extras.totalProbPoints ? 1 : -1;
                 })
-                .map((p, i) => (<tr>
+                .map((p, i) => (<tr key={getKey('peoples', i)}>
                   <td>{i + 1}</td>
                   <td>{p.extras.teamName}</td>
                   <td>{p.matches_played}</td>
@@ -214,31 +207,34 @@ class FplContainer extends Component {
 
 
         <h3 className={classnames(typography.beau, styles.withMargins)}>
-          The lucky f@$&ers table</h3>
+          The lucky feckers table</h3>
         <p>🍀 Just how lucky have the managers been? 🍀</p>
+        <p>The “Points Swing” column shows the difference between the most probable
+        amount of points and the actual points of the player</p>
         <table className={styles.table}>
           <thead>
             <tr>
               <th />
               <th />
               <th />
-              <th>Pl</th>
-              <th>Total 🍀</th>
-              <th>Pts</th>
+              <th>Played</th>
+              <th>Average Luck p/w 🍀</th>
+              <th>Points Swing</th>
             </tr>
           </thead>
           <tbody>
             {
               standings
                 .sort((a, b) => {
-                  return a.extras.totalLuckScore < b.extras.totalLuckScore ? 1 : -1;
+                  return a.total - a.extras.totalProbPoints < b.total - b.extras.totalProbPoints
+                    ? 1 : -1;
                 })
-                .map((p, i) => (<tr>
+                .map((p, i) => (<tr key={getKey('lucky', i)}>
                   <td>{i + 1}</td>
                   <td>{p.extras.name}</td>
                   <td>{p.extras.teamName}</td>
                   <td>{p.matches_played}</td>
-                  <td>{p.extras.totalLuckScore}</td>
+                  <td>{Math.round(p.extras.totalAltLuckScore / p.matches_played)}</td>
                   <td>{p.total - p.extras.totalProbPoints} {p.total - p.extras.totalProbPoints > 0 ? '🍀' : '🍇'}</td>
                 </tr>))
             }
@@ -246,7 +242,15 @@ class FplContainer extends Component {
         </table>
         <hr />
         <h2 className={typography.ben}>Results</h2>
+        <hr />
+        <p>The official results so far with the player’s luck score added</p>
+        <p>🍀 - The lucky fecker of the week</p>
+        <p>🍇 - Sour grapes this week?</p>
         { results.reverse().map(renderWeekResults) }
+        <hr />
+        <h2 className={typography.ben}>Fixtures</h2>
+        <hr />
+        Fixtures ({fixtures.length}) coming soon...
       </div>
     );
   }
@@ -257,10 +261,11 @@ FplContainer.propTypes = {
   loadingContent: PropTypes.string,
   preContent: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
-  results: PropTypes.arrayOf(PropTypes.object),
+  league: PropTypes.object,
+  results: PropTypes.arrayOf(PropTypes.array),
   loadingState: PropTypes.string,
   standings: PropTypes.arrayOf(PropTypes.object),
-  fixtures: PropTypes.arrayOf(PropTypes.object)
+  fixtures: PropTypes.arrayOf(PropTypes.array)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FplContainer);

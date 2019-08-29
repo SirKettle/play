@@ -60,6 +60,17 @@ const eventToFixture = (event, playerEntries) => {
 //   luckScore: 2,
 //   probPoints: 3
 // }
+
+const getLuckScore = (matchWon, matchDrawn, probWon, maxLuckScore) => {
+  if (matchWon) {
+    return Math.round((1 - probWon) * maxLuckScore);
+  }
+  if (matchDrawn) {
+    return probWon > 0.5 ? -1 : +1;
+  }
+  return -Math.round(probWon * maxLuckScore);
+};
+
 const getLuck = (weekPlayers, currentPlayer) => {
   const currentPlayerIndex = weekPlayers.findIndex(wkPly => wkPly.id === currentPlayer.id);
   const others = weekPlayers.filter((ply, index) => index !== currentPlayerIndex);
@@ -87,6 +98,7 @@ const getLuck = (weekPlayers, currentPlayer) => {
     draw,
     probWon,
     luckScore,
+    altLuckScore: getLuckScore(currentPlayer.won, currentPlayer.draw, probWon, others.length),
     probPoints,
     winNotch,
     loseNotch,
@@ -127,6 +139,10 @@ export const detailsSelector = createSelector(
 export const detailsLoadingSelector = createSelector(
   modelSelector,
   model => model.get('loadingState'));
+
+export const leagueSelector = createSelector(
+  detailsSelector,
+  details => details.league);
 
 export const playersSelector = createSelector(
   detailsSelector,
@@ -236,14 +252,15 @@ export const decoratedStandingsSelector = createSelector(
   resultsByPlayerSelector,
   standingsSelector,
   (resultsByPlayer, standings) => {
-    console.log(resultsByPlayer);
-
     return standings.map((playerStanding) => {
       const playerResults = resultsByPlayer[playerStanding.league_entry];
       return {
         ...playerStanding,
+        matches_played: playerStanding.matches_won + playerStanding.matches_lost
+          + playerStanding.matches_drawn,
         extras: {
           totalLuckScore: playerResults.reduce(getTally('luckScore'), 0),
+          totalAltLuckScore: playerResults.reduce(getTally('altLuckScore'), 0),
           totalProbPoints: playerResults.reduce(getTally('probPoints'), 0),
           totalProbWin: playerResults.reduce(getTally('winNotch'), 0),
           totalProbLose: playerResults.reduce(getTally('loseNotch'), 0),

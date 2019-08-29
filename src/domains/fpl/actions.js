@@ -30,9 +30,12 @@ export function loadDetails(dispatch, leagueId = OUR_LEAGUE_ID) {
     method: 'GET'
     // mode: 'no-cors'
   }).then((response) => {
-    return response.json();
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Not ok');
   }, (error) => {
-    console.log(error);
+    throw new Error(error);
   }).then((payload) => {
     dispatch({
       type: actionTypes.LOAD_FPL_DETAILS_SUCCESS,
